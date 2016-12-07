@@ -1,4 +1,4 @@
 #!/bin/bash
 sleep 10
 echo "Jenkins plugin"
-node ./node-jenkins/jenkins.js >> log-jenkins.txt
+node ./node-jenkins/jenkins.js >> console-jenkins.log
