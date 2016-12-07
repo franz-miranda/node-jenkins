@@ -2,7 +2,6 @@
 // .......................................................................
 // .......................................................................
 require('shelljs/global');
-var jenkins = require('jenkins')('http://localhost:8089');
 var request = require('request'); // www.npmjs.com/package/request
 var fs = require('fs');
 
@@ -21,23 +20,26 @@ const FOLDER_TEST = 'test';
 
 const PROYECT_CREATE = 'new-proyect.sh';
 
-var token = undefined;
-var login = 'root';
-var password = '12345678';
+var adminJson = __dirname+'/admin.json';
+var admin = fs.readFileSync(adminJson, 'utf8');
+var objAdmin = JSON.parse(admin);
 
 var userJson = __dirname+'/user.json';
 var account = fs.readFileSync(userJson, 'utf8');
 var objAccount = JSON.parse(account);
-console.log(objAccount);
-var registerId = [];
 
 var repositoryJson = __dirname+'/repository.json';
 var repository = fs.readFileSync(repositoryJson, 'utf8');
 var objRepository = JSON.parse(repository);
+
 console.log(objRepository);
 var backupJenkinsJava = __dirname+'/java.xml';
 var work = fs.readFileSync(backupJenkinsJava, 'utf8');
-console.log(work);
+
+var token = undefined;
+var login = 'root';
+var password = objAdmin.password;
+
 this.getToken = function (callback) {
     request.post(
         {
@@ -159,52 +161,23 @@ this.clonePushTest = function (callback) {
                 console.log("error al subir archivos");
             }
         }
-        console.log('Termino ejecucion');
-    }
-};
-
-
-this.jenkinsWork = function (callback) {
-    console.log("Initial work Jenkins");
-    var max = Object.keys(objRepository).length + Object.keys(objAccount).length;
-    var count = 0;
-    var copia = work;
-    for (var key in objRepository) {
-        var simpleRepository = objRepository[key];
-        var nameProyect = simpleRepository.name;
-        for (var identifier in objAccount) {
-            var usuario = objAccount[identifier];
-            copia = copia.replace(/@user@/g, usuario.nombre);
-            copia = copia.replace(/@password@/g, usuario.password);
-            copia = copia.replace(/@proyect@/g, nameProyect);
-            copia = copia.replace(/@central@/g, login);
-            copia = copia.replace(/@password-admin@/g, password);
-            jenkins.job.create(nameProyect + '-' + usuario.nombre, copia, function (err) {
-                if (err)
-                    throw err;
-                count++;
-                if (count == max) {
-                    callback(null);
-                }
-            });
-            copia = work;
-        }
+        console.log('Finish ');
     }
 };
 
 this.gitlabPassword = function (callback) {
-    console.log("Initial reset Password Gitlab");
+    console.log("Initial reset password Gitlab");
     if (exec('gitlab-rails console production < '+__dirname+'/file').code !== 0) {
-        echo('Error: al Clonar Repo');
+        console.log("Error add password GitLab");
         exit(1);
     } else {
-        console.log("Exito");
+        console.log("Finish password Gitlab");
         callback(null);
     }
 };
 
 this.createUserProyectBash = function (callback) {
-    console.log("Verificación cantidad de elementos "+Object.keys(objAccount).length);
+    console.log("Count element "+Object.keys(objAccount).length);
     var verification = '#!/bin/bash \n';
 
     for (var key in objAccount) {
@@ -229,7 +202,7 @@ this.createUserProyectBash = function (callback) {
     fs.writeFileSync(PROYECT_CREATE, verification, 'utf8');
     chmod(755, PROYECT_CREATE);
     if (exec('sh ' + PROYECT_CREATE + '>> data.txt').code === 0) {
-        console.log("correto Ejecutado");
+        console.log("Exit user and proyect GitLab");
         callback(null);
     }else{
         callback(null);

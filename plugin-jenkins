@@ -1,0 +1,29 @@
+#!/bin/bash
+echo "Init Script Jenkins"
+echo "Import Sonar Jenkins"
+curl -X POST http://@server@:@port@/pluginManager/installNecessaryPlugins -d '<install plugin="sonar@current" />'
+sleep 10
+echo "Import Git Jenkins"
+curl -X POST http://@server@:@port@/pluginManager/installNecessaryPlugins -d '<install plugin="git@current" />'
+sleep 10
+echo "Import GreenBalls Jenkins"
+curl -X POST http://@server@:@port@/pluginManager/installNecessaryPlugins -d '<install plugin="greenballs@current" />'
+sleep 10
+echo "Import Github Jenkins"
+curl -X POST http://@server@:@port@/pluginManager/installNecessaryPlugins -d '<install plugin="github@current" />'
+sleep 30
+somesscript=$(cat ./node-jenkins/somescript-maven.groovy)
+somesthread=$(cat ./node-jenkins/somethread.groovy)
+someuser=$(cat ./node-jenkins/someuser.groovy)
+echo "Import Maven Jenkins"
+curl -d "script=$somesscript" http://@server@:@port@/script
+sleep 10
+echo "Import Threads"
+curl -d "script=$somesthread" http://@server@:@port@/script
+sleep 10
+echo "Reset Password Jenkins"
+curl -d "script=$someuser" http://@server@:@port@/script
+#curl -X POST -u admin:admin http://localhost:8089/restart
+sleep 30
+echo "Restart Jenkins"
+curl -X POST -u @user@:@password@ http://@server@:@port@/safeRestart
