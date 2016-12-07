@@ -34,7 +34,7 @@ const PROYECT_CREATE = 'script-jenkins.sh';
 
 this.jenkinsWork = function (callback) {
     console.log("Initial work Jenkins");
-    var max = Object.keys(objRepository).length + Object.keys(objAccount).length;
+    var max = Object.keys(objRepository).length * Object.keys(objAccount).length;
     var count = 0;
     var copy = work;
     for (var key in objRepository) {
@@ -45,8 +45,8 @@ this.jenkinsWork = function (callback) {
             copy = copy.replace(/@user@/g, usuario.nombre);
             copy = copy.replace(/@password@/g, usuario.password);
             copy = copy.replace(/@proyect@/g, nameProyect);
-            copy = copy.replace(/@central@/g, login);
-            copy = copy.replace(/@password-admin@/g, password);
+            copy = copy.replace(/@central@/g, objAdmin.name);
+            copy = copy.replace(/@password-admin@/g, objAdmin.password);
             jenkins.job.create(nameProyect + '-' + usuario.nombre, copy, function (err) {
                 if (err)
                     throw err;
@@ -73,7 +73,7 @@ this.jenkinsScript = function (callback) {
     copyGroovy = copyGroovy.replace(/@password@/g, objAdmin.password);
 
     fs.writeFileSync(PROYECT_CREATE, copy, 'utf8');
-    fs.writeFileSync(SOMEUSER, copyGroovy, 'utf8');
+    fs.writeFileSync(__dirname+SOMEUSER, copyGroovy, 'utf8');
 
     chmod(755, PROYECT_CREATE);
     if (exec('sh ' + PROYECT_CREATE + '>> log-script-jenkins.txt').code === 0) {
