@@ -20,18 +20,24 @@ clientGitlab.gitlabPassword(function (err) {
                 console.log("Verificacion de Proyect");
                 return;
             }
-            clientGitlab.clonePush(function (err) {
+            clientGitlab.clonePushTest(function (err) {
                 if (err) {
-                    console.log("Error clone proyect");
+                    console.log("Verificacion de Proyect test");
                     return;
                 }
-                console.log("Finish clone push proyect");
-                clientGitlab.jenkinsWork(function (err) {
+                clientGitlab.clonePush(function (err) {
                     if (err) {
-                        console.log("Error create jenkins proyect");
+                        console.log("Error clone proyect");
                         return;
                     }
-                    console.log("Finish work complete");
+                    console.log("Finish clone push proyect");
+                    clientGitlab.jenkinsWork(function (err) {
+                        if (err) {
+                            console.log("Error create jenkins proyect");
+                            return;
+                        }
+                        console.log("Finish work complete");
+                    });
                 });
             });
         });

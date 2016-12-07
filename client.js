@@ -177,6 +177,8 @@ this.jenkinsWork = function (callback) {
             copia = copia.replace(/@user@/g, usuario.nombre);
             copia = copia.replace(/@password@/g, usuario.password);
             copia = copia.replace(/@proyect@/g, nameProyect);
+            copia = copia.replace(/@central@/g, login);
+            copia = copia.replace(/@password-admin@/g, password);
             jenkins.job.create(nameProyect + '-' + usuario.nombre, copia, function (err) {
                 if (err)
                     throw err;

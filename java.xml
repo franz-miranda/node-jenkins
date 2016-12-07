@@ -45,6 +45,7 @@
     <hudson.tasks.Shell>
       <command>rm -rf @proyect@
 git clone http://@user@:@password@@localhost/@user@/@proyect@.git
+git clone http://@central@:@password-admin@@localhost/root/@proyect@.git @proyect@/JunitTesting/src/test
 cd @proyect@</command>
     </hudson.tasks.Shell>
   </prebuilders>
