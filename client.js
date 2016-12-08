@@ -206,10 +206,11 @@ this.createUserProyectBash = function (callback) {
     }
     fs.writeFileSync(PROYECT_CREATE, verification, 'utf8');
     chmod(755, PROYECT_CREATE);
-    if (exec('sh ' + PROYECT_CREATE + '>> data.txt').code === 0) {
+    if (exec('sh ' + PROYECT_CREATE + '>> data.txt').code !== 0) {
         console.log("Exit user and proyect GitLab");
         callback(null);
     }else{
+        console.log("Error user and proyect GitLab");
         callback(null);
     }
 };

@@ -75,7 +75,7 @@ this.jenkinsScript = function (callback) {
     fs.writeFileSync(userJenkins, copyGroovy, 'utf8');
 
     chmod(755, PROYECT_CREATE);
-    if (exec('sh ' + PROYECT_CREATE + '>> console-bash-jenkins.log').code === 0) {
+    if (exec('sh ' + PROYECT_CREATE + '>> console-bash-jenkins.log').code !== 0) {
         console.log("Error script jenkins");
         throw err;
     }else{
