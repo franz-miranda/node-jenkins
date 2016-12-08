@@ -44,7 +44,7 @@ this.jenkinsWork = function (callback) {
             copy = copy.replace(/@user@/g, usuario.nombre);
             copy = copy.replace(/@password@/g, usuario.password);
             copy = copy.replace(/@proyect@/g, nameProyect);
-            copy = copy.replace(/@central@/g, objAdmin.name);
+            //copy = copy.replace(/@central@/g, objAdmin.name);
             copy = copy.replace(/@password-admin@/g, objAdmin.password);
             jenkins.job.create(nameProyect + '-' + usuario.nombre, copy, function (err) {
                 if (err)
