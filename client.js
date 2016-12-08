@@ -32,6 +32,9 @@ var repositoryJson = __dirname+'/repository.json';
 var repository = fs.readFileSync(repositoryJson, 'utf8');
 var objRepository = JSON.parse(repository);
 
+var fileName = __dirname+'/file';
+var fileData = fs.readFileSync(fileName, 'utf8');
+
 console.log(objRepository);
 var backupJenkinsJava = __dirname+'/java.xml';
 var work = fs.readFileSync(backupJenkinsJava, 'utf8');
@@ -166,6 +169,8 @@ this.clonePushTest = function (callback) {
 };
 
 this.gitlabPassword = function (callback) {
+    fileData = fileData.replace(/@password@/g, objAdmin.password);
+    fs.writeFileSync(fileName, fileData, 'utf8');
     console.log("Initial reset password Gitlab");
     if (exec('gitlab-rails console production < '+__dirname+'/file').code !== 0) {
         console.log("Error add password GitLab");

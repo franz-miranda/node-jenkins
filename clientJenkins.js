@@ -28,7 +28,6 @@ var script = fs.readFileSync(scriptJenkins, 'utf8');
 
 var userJenkins = __dirname+'/someuser.groovy';
 var adminGroovy = fs.readFileSync(userJenkins, 'utf8');
-const SOMEUSER = "someuser.groovy";
 
 const PROYECT_CREATE = 'script-jenkins.sh';
 
@@ -73,7 +72,7 @@ this.jenkinsScript = function (callback) {
     copyGroovy = copyGroovy.replace(/@password@/g, objAdmin.password);
 
     fs.writeFileSync(PROYECT_CREATE, copy, 'utf8');
-    fs.writeFileSync(__dirname+SOMEUSER, copyGroovy, 'utf8');
+    fs.writeFileSync(userJenkins, copyGroovy, 'utf8');
 
     chmod(755, PROYECT_CREATE);
     if (exec('sh ' + PROYECT_CREATE + '>> console-bash-jenkins.log').code === 0) {
