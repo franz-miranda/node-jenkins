@@ -36,8 +36,6 @@ var fileName = __dirname+'/file';
 var fileData = fs.readFileSync(fileName, 'utf8');
 
 console.log(objRepository);
-var backupJenkinsJava = __dirname+'/java.xml';
-var work = fs.readFileSync(backupJenkinsJava, 'utf8');
 
 var token = undefined;
 var login = 'root';
